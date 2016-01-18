@@ -19,13 +19,13 @@ subject_train <- read.table("UCI HAR Dataset/train/subject_train.txt", header = 
 colnames(x_test) <- features$V2
 colnames(x_train) <- features$V2
 
-# add activity labels
+# todo: set column names on activity_labels to id and name, merge in id but not name
 y_test_labeled <- merge(y_test, activity_labels, by.x = "V1", by.y = "V1")
 y_train_labeled <- merge(y_train, activity_labels, by.x = "V1", by.y = "V1")
 x_test <- cbind(x_test, activity = y_test_labeled$V2)
 x_train <- cbind(x_train, activity = y_train_labeled$V2)
 
-# add subjects
+# todo: set column name on subjects, merge in id
 x_test <- cbind(x_test, subject = subject_test$V1)
 x_train <- cbind(x_train, subject = subject_train$V1)
 
@@ -38,3 +38,11 @@ x_merged <- rbind(x_test, x_train)
 x_select <- subset(x_merged, select=(names(x_merged)[grep('-mean()|-std()|^activity|^sampleType|^subject',names(x_merged))]))
 
 # todo: average each variable for each activity and each subject
+
+# todo: export tidy datasets
+if (!file.exists("tidy"))  dir.create("tidy")
+
+write.csv(x_select, "tidy/HAR_sensor_measurements.csv")
+write.csv(activity_labels, "tidy/activities.csv")
+#write.csv(subject_lookup, "tidy/subjects.csv")
+#write.csv(averages, "tidy/averages_by_subject_and_activity.csv")
