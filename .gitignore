@@ -9,6 +9,10 @@
 .Rproj.user/
 getdata-project.Rproj
 
+# R and Mac debris
+.RData
+.DS_Store
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
