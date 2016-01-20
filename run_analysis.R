@@ -1,4 +1,5 @@
 library(plyr)
+library(reshape2)
 
 # Dowload and unzip UCI HAR dataset, unless the unzipped directory already exists
 if (!file.exists("UCI HAR Dataset")) {
@@ -40,9 +41,8 @@ subjects_merged <- unique(rbind(subject_test, subject_train)[c("subject_id", "sa
 x_select <- subset(x_merged, select=(names(x_merged)[grep('-mean()|-std()|^activity|^sample_type|^subject',names(x_merged))]))
 
 # average each variable for each activity and each subject
-averages_by_subject_and_activity <- ddply(x_select, c('subject_id', 'activity_id'), numcolwise(mean))
-averages_by_subject <- ddply(x_select, 'subject_id', numcolwise(mean))
-averages_by_activity <- ddply(x_select, 'activity_id', numcolwise(mean))
+average_melt <- melt(x_select, id.vars=c('activity_id', 'subject_id'))
+averages <- dcast(average_melt, activity_id + subject_id ~ variable, mean, margins = c('activity_id', 'subject_id'))
 
 # export tidy datasets
 if (!file.exists("tidy"))  dir.create("tidy")
@@ -50,6 +50,4 @@ if (!file.exists("tidy"))  dir.create("tidy")
 write.csv(x_select, "tidy/HAR_sensor_measurements.csv", row.names = FALSE)
 write.csv(activity_labels, "tidy/activities.csv", row.names = FALSE)
 write.csv(subjects_merged, "tidy/subjects.csv", row.names = FALSE)
-write.csv(averages_by_subject_and_activity, "tidy/averages_by_subject_and_activity.csv", row.names = FALSE)
-write.csv(averages_by_subject, "tidy/averages_by_subject.csv", row.names = FALSE)
-write.csv(averages_by_activity, "tidy/averages_by_activity.csv", row.names = FALSE)
+write.csv(averages, "tidy/averages_by_activity_and_subject.csv", row.names = FALSE)
