@@ -1,5 +1,6 @@
 library(plyr)
 library(reshape2)
+library(data.table)
 
 # Dowload and unzip UCI HAR dataset, unless the unzipped directory already exists
 if (!file.exists("UCI HAR Dataset")) {
@@ -38,13 +39,23 @@ x_merged <- rbind(x_test, x_train)
 subjects_merged <- unique(rbind(subject_test, subject_train)[c("subject_id", "sample_type")])
 
 # extract mean and std columns
-x_select <- subset(x_merged, select=(names(x_merged)[grep('-mean()|-std()|^activity|^sample_type|^subject',names(x_merged))]))
+selected_columns <- names(x_merged)[grep('-mean()|-std()|^activity|^subject',names(x_merged))]
+x_select <- subset(x_merged, select=(selected_columns))
+
+# change measurement columns to more descriptive labels
+descriptive_measurement_columns <- measurement_columns <- selected_columns[grep('^activity|^subject',selected_columns, invert=TRUE)]
+pattern_replacements <- list(c("t","time_"), c("Body", "body_"), c("Acc", "acceleration_"))
+for (row in pattern_replacements) {
+    descriptive_measurement_columns <- gsub(row[1], row[2], descriptive_measurement_columns)
+}
+#apply(pattern_replacements, 1, function(row) gsub(row[1], row[2], measurement_columns))
+setnames(x_select, old=measurement_columns, new=descriptive_measurement_columns)
 
 # average each variable for each activity and each subject
 average_melt <- melt(x_select, id.vars=c('activity_id', 'subject_id'))
 averages <- dcast(average_melt, activity_id + subject_id ~ variable, mean, margins = c('activity_id', 'subject_id'))
 
-# export tidy datasets
+# export tidy datasets to 'tidy' directory
 if (!file.exists("tidy"))  dir.create("tidy")
 
 write.csv(x_select, "tidy/HAR_sensor_measurements.csv", row.names = FALSE)
