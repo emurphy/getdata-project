@@ -39,17 +39,26 @@ x_merged <- rbind(x_test, x_train)
 subjects_merged <- unique(rbind(subject_test, subject_train)[c("subject_id", "sample_type")])
 
 # extract mean and std columns
-selected_columns <- names(x_merged)[grep('-mean()|-std()|^activity|^subject',names(x_merged))]
+selected_columns <- names(x_merged)[grep('-mean()|-std()|Mean|^activity|^subject',names(x_merged))]
 x_select <- subset(x_merged, select=(selected_columns))
 
 # change measurement columns to more descriptive labels
-descriptive_measurement_columns <- measurement_columns <- selected_columns[grep('^activity|^subject',selected_columns, invert=TRUE)]
-pattern_replacements <- list(c("t","time_"), c("Body", "body_"), c("Acc", "acceleration_"))
+descriptive_columns <- measurement_columns <- selected_columns[grep('^activity|^subject',selected_columns, 
+                                                                    invert=TRUE)]
+pattern_replacements <- list(c("^t","time_"), c("^f", "frequency_"), 
+                             c("Body", "body_"), c("Gravity", "gravity_"), 
+                             c("Acc", "acceleration_"), c("Gyro", "angular_velocity_"),
+                             c("-meanFreq()", "mean_frequency"), c("-mean\\(\\)", "mean"), 
+                             c("-([XYZ])", "_\\1_axial"), c("-std\\(\\)", "standard_deviation"),
+                             c("frequency\\(\\)", "frequency"), c("Mag", "magnitude_"), c("Jerk", "jerk_"), 
+                             c("gravityMean", "gravity_mean"), c("Mean", "mean"), 
+                             c("angle\\(([a-zA-Z_,])\\)", "signal_window_sample_\\1_"),
+                             c(",", "_by_"))
 for (row in pattern_replacements) {
-    descriptive_measurement_columns <- gsub(row[1], row[2], descriptive_measurement_columns)
+    descriptive_columns <- gsub(row[1], row[2], descriptive_columns)
 }
 #apply(pattern_replacements, 1, function(row) gsub(row[1], row[2], measurement_columns))
-setnames(x_select, old=measurement_columns, new=descriptive_measurement_columns)
+setnames(x_select, old=measurement_columns, new=descriptive_columns)
 
 # average each variable for each activity and each subject
 average_melt <- melt(x_select, id.vars=c('activity_id', 'subject_id'))
