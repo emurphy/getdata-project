@@ -58,7 +58,6 @@ pattern_replacements <- list(c("^t","time_"), c("^f", "frequency_"),
 for (row in pattern_replacements) {
     descriptive_columns <- gsub(row[1], row[2], descriptive_columns)
 }
-#apply(pattern_replacements, 1, function(row) gsub(row[1], row[2], measurement_columns))
 setnames(x_select, old=measurement_columns, new=descriptive_columns)
 
 # average each variable for each activity and each subject
