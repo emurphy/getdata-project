@@ -61,49 +61,18 @@ for (row in pattern_replacements) {
 setnames(x_select, old=measurement_columns, new=descriptive_columns)
 
 # average each variable for each activity and each subject
-average_melt <- melt(x_select, id.vars=c('activity_id', 'subject_id'))
+fixed_variable_columns <- c('activity_id', 'subject_id')
+average_melt <- melt(x_select, id.vars=fixed_variable_columns)
 averages <- dcast(average_melt, activity_id + subject_id ~ variable, mean, margins = c('activity_id', 'subject_id'))
 
-# move subject and activity id columns to the beginning
-moveme <- function (invec, movecommand) {
-    movecommand <- lapply(strsplit(strsplit(movecommand, ";")[[1]], 
-                                   ",|\\s+"), function(x) x[x != ""])
-    movelist <- lapply(movecommand, function(x) {
-        Where <- x[which(x %in% c("before", "after", "first", 
-                                  "last")):length(x)]
-        ToMove <- setdiff(x, Where)
-        list(ToMove, Where)
-    })
-    myVec <- invec
-    for (i in seq_along(movelist)) {
-        temp <- setdiff(myVec, movelist[[i]][[1]])
-        A <- movelist[[i]][[2]][1]
-        if (A %in% c("before", "after")) {
-            ba <- movelist[[i]][[2]][2]
-            if (A == "before") {
-                after <- match(ba, temp) - 1
-            }
-            else if (A == "after") {
-                after <- match(ba, temp)
-            }
-        }
-        else if (A == "first") {
-            after <- 0
-        }
-        else if (A == "last") {
-            after <- length(myVec)
-        }
-        myVec <- append(temp, values = movelist[[i]][[1]], after = after)
-    }
-    myVec
-}
-x_select <- x_select[moveme(names(x_select), "subject_id first")]
-x_select <- x_select[moveme(names(x_select), "activity_id first")]
+# move fixed variable (subject and activity id) columns to the beginning
+x_select_data_table <- data.table(x_select)
+setcolorder(x_select_data_table, c(fixed_variable_columns, descriptive_columns))
 
 # export tidy datasets to 'tidy' directory
 if (!file.exists("tidy"))  dir.create("tidy")
 
-write.csv(x_select, "tidy/HAR_sensor_measurements.csv", row.names = FALSE)
+write.csv(x_select_data_table, "tidy/HAR_sensor_measurements.csv", row.names = FALSE)
 write.csv(activity_labels, "tidy/activities.csv", row.names = FALSE)
 write.csv(subjects_merged, "tidy/subjects.csv", row.names = FALSE)
 write.csv(averages, "tidy/averages_by_activity_and_subject.csv", row.names = FALSE)
