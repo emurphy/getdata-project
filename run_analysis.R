@@ -19,7 +19,7 @@ activity_labels <- read.table("UCI HAR Dataset/activity_labels.txt", header=FALS
 subject_test <- read.table("UCI HAR Dataset/test/subject_test.txt", header = FALSE)
 subject_train <- read.table("UCI HAR Dataset/train/subject_train.txt", header = FALSE)
 
-# set column names on observations (from features), activities and subjects
+# set column names on activities, subjects and observations
 colnames(features) = c('feature_id', 'feature_name')
 colnames(x_test) <- colnames(x_train) <- features$feature_name
 colnames(activity_labels) <- c('activity_id', 'activity_name')
@@ -49,11 +49,12 @@ pattern_replacements <- list(c("^t","time_"), c("^f", "frequency_"),
                              c("Body", "body_"), c("Gravity", "gravity_"), 
                              c("Acc", "acceleration_"), c("Gyro", "angular_velocity_"),
                              c("-meanFreq()", "mean_frequency"), c("-mean\\(\\)", "mean"), 
-                             c("-([XYZ])", "_\\1_axial"), c("-std\\(\\)", "standard_deviation"),
+                             c("-([X-Z])", "_\\1_axial"), c("-std\\(\\)", "standard_deviation"),
                              c("frequency\\(\\)", "frequency"), c("Mag", "magnitude_"), c("Jerk", "jerk_"), 
                              c("gravityMean", "gravity_mean"), c("Mean", "mean"), 
-                             c("angle\\(([a-zA-Z_,])\\)", "signal_window_sample_\\1_"),
-                             c(",", "_by_"))
+                             c("angle\\(([X-Z])", "angle\\(\\1_axial"),
+                             c("angle\\(", "sample_average_angle_"), 
+                             c(",", "_by_"), c("tbody", "time_body"), c("\\)", ""))
 for (row in pattern_replacements) {
     descriptive_columns <- gsub(row[1], row[2], descriptive_columns)
 }
