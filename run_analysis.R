@@ -39,7 +39,7 @@ x_merged <- rbind(x_test, x_train)
 subjects_merged <- unique(rbind(subject_test, subject_train)[c("subject_id", "sample_type")])
 
 # extract mean and std columns
-selected_columns <- names(x_merged)[grep('-mean()|-std()|Mean|^activity|^subject',names(x_merged))]
+selected_columns <- names(x_merged)[grep('^activity|^subject|-mean()|-std()|Mean',names(x_merged))]
 x_select <- subset(x_merged, select=(selected_columns))
 
 # change measurement columns to more descriptive labels
@@ -63,6 +63,42 @@ setnames(x_select, old=measurement_columns, new=descriptive_columns)
 # average each variable for each activity and each subject
 average_melt <- melt(x_select, id.vars=c('activity_id', 'subject_id'))
 averages <- dcast(average_melt, activity_id + subject_id ~ variable, mean, margins = c('activity_id', 'subject_id'))
+
+# move subject and activity id columns to the beginning
+moveme <- function (invec, movecommand) {
+    movecommand <- lapply(strsplit(strsplit(movecommand, ";")[[1]], 
+                                   ",|\\s+"), function(x) x[x != ""])
+    movelist <- lapply(movecommand, function(x) {
+        Where <- x[which(x %in% c("before", "after", "first", 
+                                  "last")):length(x)]
+        ToMove <- setdiff(x, Where)
+        list(ToMove, Where)
+    })
+    myVec <- invec
+    for (i in seq_along(movelist)) {
+        temp <- setdiff(myVec, movelist[[i]][[1]])
+        A <- movelist[[i]][[2]][1]
+        if (A %in% c("before", "after")) {
+            ba <- movelist[[i]][[2]][2]
+            if (A == "before") {
+                after <- match(ba, temp) - 1
+            }
+            else if (A == "after") {
+                after <- match(ba, temp)
+            }
+        }
+        else if (A == "first") {
+            after <- 0
+        }
+        else if (A == "last") {
+            after <- length(myVec)
+        }
+        myVec <- append(temp, values = movelist[[i]][[1]], after = after)
+    }
+    myVec
+}
+x_select <- x_select[moveme(names(x_select), "subject_id first")]
+x_select <- x_select[moveme(names(x_select), "activity_id first")]
 
 # export tidy datasets to 'tidy' directory
 if (!file.exists("tidy"))  dir.create("tidy")
