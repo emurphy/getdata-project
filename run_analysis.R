@@ -72,7 +72,7 @@ setcolorder(x_select_data_table, c(fixed_variable_columns, descriptive_columns))
 # export tidy datasets to 'tidy' directory
 if (!file.exists("tidy"))  dir.create("tidy")
 
-write.csv(x_select_data_table, "tidy/HAR_sensor_measurements.csv", row.names = FALSE)
-write.csv(activity_labels, "tidy/activities.csv", row.names = FALSE)
-write.csv(subjects_merged, "tidy/subjects.csv", row.names = FALSE)
-write.csv(averages, "tidy/averages_by_activity_and_subject.csv", row.names = FALSE)
+write.table(x_select_data_table, "tidy/HAR_sensor_measurements.txt", row.names = FALSE)
+write.table(activity_labels, "tidy/activities.txt", row.names = FALSE)
+write.table(subjects_merged, "tidy/subjects.txt", row.names = FALSE)
+write.table(averages, "averages_by_activity_and_subject.txt", row.names = FALSE)

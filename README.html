@@ -61,11 +61,11 @@ img {
 
 
 
-<div id="run_analysis.r-script-to-tidy-uci-human-activity-recognition-using-smartphones-data-set" class="section level1">
-<h1>run_analysis.R script to tidy UCI Human Activity Recognition Using Smartphones Data Set</h1>
+<div id="tidy-and-average-uci-human-activity-recognition-har-using-smartphones-data-set" class="section level1">
+<h1>tidy and average UCI Human Activity Recognition (HAR) Using Smartphones Data Set</h1>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
-<p>The following package dependencies need to be installed:</p>
+<p>The following R package dependencies need to be installed:</p>
 <ul>
 <li>plyr</li>
 <li>reshape2</li>
@@ -79,7 +79,33 @@ img {
 <pre><code>cd /work/getdata-project
 Rscript run_analysis.R</code></pre>
 <p>The script will download and unzip the original UCI HAR data to the <code>UCI HAR Dataset</code> directory, unless that directory already exists (to save time and bandwidth on subsequent runs).</p>
-<p>It creates a new <code>tidy</code> directory with four new CSV dataset files, as described in the <a href="CodeBook.md">CodeBook</a></p>
+<p>It writes four new dataset text files to disk using <code>write.table</code>. The primary output file is saved in the working directory:</p>
+<ul>
+<li><code>averages_by_activity_and_subject.txt</code></li>
+</ul>
+<p>The remaining three are saved for reference under a <code>tidy</code> directory:</p>
+<ul>
+<li><code>subjects.csv</code></li>
+<li><code>activities.csv</code></li>
+<li><code>HAR_sensor_measurements.csv</code></li>
+</ul>
+<p>The above are all described in more detail in the <a href="CodeBook.md">Code Book</a></p>
+</div>
+<div id="run_analysis.r-steps" class="section level2">
+<h2>run_analysis.R steps</h2>
+<p>The script performs the following steps.</p>
+<ul>
+<li>Download and unzip the UCI HAR dataset unless the directory already exists</li>
+<li>Read in the dataset using read.table</li>
+<li>Set column names on activities, subjects and observations. Observation columns are for the time being named from the original <code>features.txt</code>.</li>
+<li>Merge activity and subject ids into the test and train data sets using <code>cbind</code></li>
+<li>Merge the test and train datasets using rbind, also adding a new variable on subject for sample type (<code>test</code> vs. <code>train</code>).</li>
+<li>Select the mean and standard deviation columns</li>
+<li>Change the measurement columns to more descriptive labels, as described in the Code Book. This is done by iterating over a list of pattern &lt;=&gt; replacement pairs and using <code>gsub</code>.</li>
+<li>Average each variable for each activity and each subject. <code>reshape2</code> package’s <code>melt</code> and <code>dcast</code> functions perform the mean calculations and reshape the data frame into 88 variables with 187 records.</li>
+<li>In the tidied HAR sensor measurement data, move fixed variable (subject and activity id) columns to the beginning</li>
+<li>Write the datasets using <code>write.table</code> with <code>row.names = FALSE</code></li>
+</ul>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>

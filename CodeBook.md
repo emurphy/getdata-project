@@ -19,27 +19,31 @@ For each record in the dataset it is provided:
 
 ## Tidy datasets
 
-The dataset has been tidied into the following tables, under the `tidy` directory:
+The dataset has been tidied into the following tables:
 
-- subjects.csv
-- activities.csv
-- HAR_sensor_measurements.csv
-- averages_by_activity_and_subject.csv
+- averages_by_activity_and_subject.txt
+- tidy/subjects.txt
+- tidy/activities.txt
+- tidy/HAR_sensor_measurements.txt
 
 ### Subjects
 
-subjects.csv includes two self-explanatory variables and has 30 records:
+subjects.txt includes two self-explanatory variables and has 30 records:
 
 - `subject_id`
 - `sample_type` (`test` vs. `train`)
 
 ### Activities
 
-activities.csv includes an id and labels for the six activites, in their original, all-caps form as mentioned above.
+activities.txt includes an id and labels for the six activites, in their original, all-caps form as mentioned above.
 
 ### HAR sensor measurements
 
-The experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. Activity id and subject id columns have been added to link to their respective tables.
+The experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. Activity id and subject id columns have been added to link to their respective tables. The table consists of 10,299 sample windows. As mentioned above in the original documentation above, each window summarizes 128 readings "in fixed-width sliding windows of 2.56 sec[onds] and 50% overlap."
+
+### Averages by activity and subject
+
+The 86 mean and standard deviation variables are further averaged by activity and subject. 
 
 #### Summary of the measurement column names
 

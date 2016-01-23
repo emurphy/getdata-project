@@ -80,16 +80,16 @@ For each record in the dataset it is provided:
 </div>
 <div id="tidy-datasets" class="section level2">
 <h2>Tidy datasets</h2>
-<p>The dataset has been tidied into the following tables, under the <code>tidy</code> directory:</p>
+<p>The dataset has been tidied into the following tables:</p>
 <ul>
-<li>subjects.csv</li>
-<li>activities.csv</li>
-<li>HAR_sensor_measurements.csv</li>
-<li>averages_by_activity_and_subject.csv</li>
+<li>averages_by_activity_and_subject.txt</li>
+<li>tidy/subjects.txt</li>
+<li>tidy/activities.txt</li>
+<li>tidy/HAR_sensor_measurements.txt</li>
 </ul>
 <div id="subjects" class="section level3">
 <h3>Subjects</h3>
-<p>subjects.csv includes two self-explanatory variables and has 30 records:</p>
+<p>subjects.txt includes two self-explanatory variables and has 30 records:</p>
 <ul>
 <li><code>subject_id</code></li>
 <li><code>sample_type</code> (<code>test</code> vs. <code>train</code>)</li>
@@ -97,11 +97,15 @@ For each record in the dataset it is provided:
 </div>
 <div id="activities" class="section level3">
 <h3>Activities</h3>
-<p>activities.csv includes an id and labels for the six activites, in their original, all-caps form as mentioned above.</p>
+<p>activities.txt includes an id and labels for the six activites, in their original, all-caps form as mentioned above.</p>
 </div>
 <div id="har-sensor-measurements" class="section level3">
 <h3>HAR sensor measurements</h3>
-<p>The experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. Activity id and subject id columns have been added to link to their respective tables.</p>
+<p>The experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. Activity id and subject id columns have been added to link to their respective tables. The table consists of 10,299 sample windows. As mentioned above in the original documentation above, each window summarizes 128 readings “in fixed-width sliding windows of 2.56 sec[onds] and 50% overlap.”</p>
+</div>
+<div id="averages-by-activity-and-subject" class="section level3">
+<h3>Averages by activity and subject</h3>
+<p>The 86 mean and standard deviation variables are further averaged by activity and subject.</p>
 <div id="summary-of-the-measurement-column-names" class="section level4">
 <h4>Summary of the measurement column names</h4>
 <p>As in the original, the following components make up the measurement columns (renamed to be more descriptive):</p>
