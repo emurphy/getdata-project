@@ -36,19 +36,17 @@ The above are all described in more detail in the [Code Book](CodeBook.md)
 The script performs the following steps. 
 
 - Download and unzip the UCI HAR dataset unless the directory already exists
-- Read in the dataset using read.table
+- Read in the dataset using `read.table`
 - Set column names on activities, subjects and observations using `colnames`. Observation columns are for the time being named from the original `features.txt`.
 - Merge activity and subject ids into the test and train data sets using `cbind`
 - Merge the test and train datasets using `rbind`, also adding a new variable on subject for sample type (`test` vs. `train`).
 - Select the mean and standard deviation columns, with a combination of `grep` and `subset`.
-- Change the measurement columns to more descriptive labels, as described in the Code Book. This is done by iterating over a list of pattern <=> replacement pairs and using `gsub`. Then `data.table` package's `setcolnames` function is used (for speed and readability).
+- Change the measurement columns to more descriptive labels, as described in the Code Book. This is done by iterating over a list of pattern => replacement pairs and using `gsub`. Then `data.table` package's `setcolnames` function is used (for speed and readability).
 - Average each variable for each activity and each subject. `reshape2` package's `melt` and `dcast` functions perform the mean calculations and reshape the data frame into 88 variables with 187 records.
 - In the tidied HAR sensor measurement data, move fixed variable (subject and activity id) columns to the beginning (columns 1 and 2).
 - Write the datasets using `write.table` with `row.names = FALSE`
 
 ## References
 
-```
 Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. A Public Domain Dataset for Human Activity Recognition Using Smartphones. 21th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, ESANN 2013. Bruges, Belgium 24-26 April 2013.
-```
 
