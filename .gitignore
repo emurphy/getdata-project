@@ -21,3 +21,7 @@ vignettes/*.pdf
 # UCI HAR dataset files
 UCI*/**
 UCI-HAR-dataset.zip
+
+# previewed readme files
+CodeBook.html
+README.html
