@@ -61,22 +61,34 @@ img {
 
 
 
-<div id="code-book-for-tidied-uci-human-activity-recognition-using-smartphones-data-set" class="section level1">
-<h1>Code Book for (Tidied) UCI Human Activity Recognition Using Smartphones Data Set</h1>
+<div id="tidy-and-averaged-uci-human-activity-recognition-using-smartphones-data-set" class="section level1">
+<h1>Tidy and Averaged UCI Human Activity Recognition Using Smartphones Data Set</h1>
+</div>
+<div id="code-book" class="section level1">
+<h1>Code Book</h1>
 <div id="overview-from-the-original" class="section level2">
 <h2>Overview from the <a href="http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones">original</a></h2>
-<pre><code>The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
-
-The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. 
-
-Attribute Information:
-
-For each record in the dataset it is provided: 
-- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration. 
-- Triaxial Angular velocity from the gyroscope. 
-- A 561-feature vector with time and frequency domain variables. 
-- Its activity label. 
-- An identifier of the subject who carried out the experiment.</code></pre>
+<blockquote>
+<p>The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data.</p>
+</blockquote>
+<blockquote>
+<p>The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain.</p>
+</blockquote>
+<blockquote>
+<p>Attribute Information:</p>
+</blockquote>
+<blockquote>
+<p>For each record in the dataset it is provided:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration.</li>
+<li>Triaxial Angular velocity from the gyroscope.</li>
+<li>A 561-feature vector with time and frequency domain variables.</li>
+<li>Its activity label.</li>
+<li>An identifier of the subject who carried out the experiment.</li>
+</ul>
+</blockquote>
 </div>
 <div id="tidy-datasets" class="section level2">
 <h2>Tidy datasets</h2>
@@ -87,9 +99,13 @@ For each record in the dataset it is provided:
 <li>tidy/activities.txt</li>
 <li>tidy/HAR_sensor_measurements.txt</li>
 </ul>
+<div id="averages-by-activity-and-subject" class="section level3">
+<h3>Averages by activity and subject</h3>
+<p>averages_by_acitivity_and_subject.txt inclues 187 records, consisting of the 86 mean and standard deviation of all original variables, further averaged by activity and subject.</p>
+</div>
 <div id="subjects" class="section level3">
 <h3>Subjects</h3>
-<p>subjects.txt includes two self-explanatory variables and has 30 records:</p>
+<p>tidy/subjects.txt includes two self-explanatory variables and has 30 records:</p>
 <ul>
 <li><code>subject_id</code></li>
 <li><code>sample_type</code> (<code>test</code> vs. <code>train</code>)</li>
@@ -97,15 +113,11 @@ For each record in the dataset it is provided:
 </div>
 <div id="activities" class="section level3">
 <h3>Activities</h3>
-<p>activities.txt includes an id and labels for the six activites, in their original, all-caps form as mentioned above.</p>
+<p>tidy/activities.txt includes an <code>activity_id</code> and <code>activity_name</code> for the six activites, in their original, all-caps form as mentioned in the original above (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING).</p>
 </div>
 <div id="har-sensor-measurements" class="section level3">
 <h3>HAR sensor measurements</h3>
-<p>The experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. Activity id and subject id columns have been added to link to their respective tables. The table consists of 10,299 sample windows. As mentioned above in the original documentation above, each window summarizes 128 readings “in fixed-width sliding windows of 2.56 sec[onds] and 50% overlap.”</p>
-</div>
-<div id="averages-by-activity-and-subject" class="section level3">
-<h3>Averages by activity and subject</h3>
-<p>The 86 mean and standard deviation variables are further averaged by activity and subject.</p>
+<p>For tidy/HAR_sensor_measurements.csv, the experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. <code>activity_id</code> and <code>subject_id</code> columns have been added to link to their respective tables. The table consists of 10,299 sample windows. As mentioned above in the original documentation above, each window summarizes 128 readings “in fixed-width sliding windows of 2.56 sec[onds] and 50% overlap.”</p>
 <div id="summary-of-the-measurement-column-names" class="section level4">
 <h4>Summary of the measurement column names</h4>
 <p>As in the original, the following components make up the measurement columns (renamed to be more descriptive):</p>
@@ -126,7 +138,7 @@ For each record in the dataset it is provided:
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<pre><code>Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. A Public Domain Dataset for Human Activity Recognition Using Smartphones. 21th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, ESANN 2013. Bruges, Belgium 24-26 April 2013.</code></pre>
+<p>Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. A Public Domain Dataset for Human Activity Recognition Using Smartphones. 21th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, ESANN 2013. Bruges, Belgium 24-26 April 2013.</p>
 </div>
 </div>
 

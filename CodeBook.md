@@ -1,21 +1,22 @@
-# Code Book for (Tidied) UCI Human Activity Recognition Using Smartphones Data Set
+# Tidy and Averaged UCI Human Activity Recognition Using Smartphones Data Set
+# Code Book
 
 ## Overview from the [original](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
 
-```
-The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+> The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
 
-The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. 
+> The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. 
 
-Attribute Information:
+> Attribute Information:
 
-For each record in the dataset it is provided: 
-- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration. 
-- Triaxial Angular velocity from the gyroscope. 
-- A 561-feature vector with time and frequency domain variables. 
-- Its activity label. 
-- An identifier of the subject who carried out the experiment.
-```
+> For each record in the dataset it is provided: 
+
+> - Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration. 
+> - Triaxial Angular velocity from the gyroscope. 
+> - A 561-feature vector with time and frequency domain variables. 
+> - Its activity label. 
+> - An identifier of the subject who carried out the experiment.
+
 
 ## Tidy datasets
 
@@ -26,24 +27,24 @@ The dataset has been tidied into the following tables:
 - tidy/activities.txt
 - tidy/HAR_sensor_measurements.txt
 
+### Averages by activity and subject
+
+averages_by_acitivity_and_subject.txt inclues 187 records, consisting of the 86 mean and standard deviation of all original variables, further averaged by activity and subject. 
+
 ### Subjects
 
-subjects.txt includes two self-explanatory variables and has 30 records:
+tidy/subjects.txt includes two self-explanatory variables and has 30 records:
 
 - `subject_id`
 - `sample_type` (`test` vs. `train`)
 
 ### Activities
 
-activities.txt includes an id and labels for the six activites, in their original, all-caps form as mentioned above.
+tidy/activities.txt includes an `activity_id` and `activity_name` for the six activites, in their original, all-caps form as mentioned in the original above (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING).
 
 ### HAR sensor measurements
 
-The experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. Activity id and subject id columns have been added to link to their respective tables. The table consists of 10,299 sample windows. As mentioned above in the original documentation above, each window summarizes 128 readings "in fixed-width sliding windows of 2.56 sec[onds] and 50% overlap."
-
-### Averages by activity and subject
-
-The 86 mean and standard deviation variables are further averaged by activity and subject. 
+For tidy/HAR_sensor_measurements.csv, the experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. `activity_id` and `subject_id` columns have been added to link to their respective tables. The table consists of 10,299 sample windows. As mentioned above in the original documentation above, each window summarizes 128 readings "in fixed-width sliding windows of 2.56 sec[onds] and 50% overlap."
 
 #### Summary of the measurement column names
 
@@ -149,6 +150,5 @@ Putting all these components together, the following 86 measurement variables re
 
 ## References
 
-```
 Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. A Public Domain Dataset for Human Activity Recognition Using Smartphones. 21th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, ESANN 2013. Bruges, Belgium 24-26 April 2013.
-```
+
