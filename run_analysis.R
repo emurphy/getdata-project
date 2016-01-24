@@ -10,12 +10,12 @@ if (!file.exists("UCI HAR Dataset")) {
 }
 
 # read in datasets
-features <- read.table("UCI HAR Dataset/features.txt", header = FALSE)
-x_test <- read.table("UCI HAR Dataset/test/X_test.txt", header = FALSE)
-x_train <- read.table("UCI HAR Dataset/train/X_train.txt", header = FALSE)
-y_test <- read.table("UCI HAR Dataset/test/y_test.txt", header=FALSE)
-y_train <- read.table("UCI HAR Dataset/train/y_train.txt", header=FALSE)
-activity_labels <- read.table("UCI HAR Dataset/activity_labels.txt", header=FALSE)
+features <- fread("UCI HAR Dataset/features.txt")
+x_test <- fread("UCI HAR Dataset/test/X_test.txt")
+x_train <- fread("UCI HAR Dataset/train/X_train.txt")
+y_test <- fread("UCI HAR Dataset/test/y_test.txt")
+y_train <- fread("UCI HAR Dataset/train/y_train.txt")
+activity_labels <- fread("UCI HAR Dataset/activity_labels.txt")
 subject_test <- read.table("UCI HAR Dataset/test/subject_test.txt", header = FALSE)
 subject_train <- read.table("UCI HAR Dataset/train/subject_train.txt", header = FALSE)
 
@@ -26,9 +26,17 @@ colnames(activity_labels) <- c('activity_id', 'activity_name')
 colnames(y_test) <- colnames(y_train) <- c('activity_id')
 colnames(subject_test) <- colnames(subject_train) <- c('subject_id')
 
-# merge activity and subject ids into test and train data sets
-x_test <- cbind(x_test, activity_id = y_test$activity_id)
-x_train <- cbind(x_train, activity_id = y_train$activity_id)
+# convert activity names to lowercase and merge activity names into test and train
+activity_labels$activity_name <- tolower(activity_labels$activity_name)
+setkey(y_test, activity_id)
+setkey(y_train, activity_id)
+setkey(activity_labels, activity_id)
+y_test <- y_test[activity_labels]
+y_train <- y_train[activity_labels]
+
+# merge activity name and subject ids into test and train data sets
+x_test <- cbind(x_test, activity_name = y_test$activity_name)
+x_train <- cbind(x_train, activity_name = y_train$activity_name)
 x_test <- cbind(x_test, subject_id = subject_test$subject_id)
 x_train <- cbind(x_train, subject_id = subject_train$subject_id)
 
@@ -61,18 +69,18 @@ for (row in pattern_replacements) {
 setnames(x_select, old=measurement_columns, new=descriptive_columns)
 
 # average each variable for each activity and each subject
-fixed_variable_columns <- c('activity_id', 'subject_id')
+fixed_variable_columns <- c('activity_name', 'subject_id')
 average_melt <- melt(x_select, id.vars=fixed_variable_columns)
-averages <- dcast(average_melt, activity_id + subject_id ~ variable, mean, margins = c('activity_id', 'subject_id'))
+averages <- dcast(average_melt, activity_name + subject_id ~ variable, mean, margins = c('activity_name', 'subject_id'))
 
-# move fixed variable (subject and activity id) columns to the beginning
-x_select_data_table <- data.table(x_select)
-setcolorder(x_select_data_table, c(fixed_variable_columns, descriptive_columns))
+# move fixed variable (subject id and activity name) columns to the beginning
+setcolorder(x_select, c(fixed_variable_columns, descriptive_columns))
 
-# export tidy datasets to 'tidy' directory
+# export tidy datasets, creating tidy directory if it does not yet exist
+write.table(averages, "averages_by_activity_and_subject.txt", row.names = FALSE)
+
 if (!file.exists("tidy"))  dir.create("tidy")
 
-write.table(x_select_data_table, "tidy/HAR_sensor_measurements.txt", row.names = FALSE)
+write.table(x_select, "tidy/HAR_sensor_measurements.txt", row.names = FALSE)
 write.table(activity_labels, "tidy/activities.txt", row.names = FALSE)
 write.table(subjects_merged, "tidy/subjects.txt", row.names = FALSE)
-write.table(averages, "averages_by_activity_and_subject.txt", row.names = FALSE)

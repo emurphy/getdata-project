@@ -40,11 +40,11 @@ tidy/subjects.txt includes two self-explanatory variables and has 30 records:
 
 ### Activities
 
-tidy/activities.txt includes an `activity_id` and `activity_name` for the six activites, in their original, all-caps form as mentioned in the original above (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING).
+tidy/activities.txt includes an `activity_id` and `activity_name` for the six activites. To improve readability, the original labels have been converted to all lower-case instead of all upper-case (to walking, walking_upstairs, walking_downstairs, sitting, standing, laying).
 
 ### HAR sensor measurements
 
-For tidy/HAR_sensor_measurements.csv, the experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. `activity_id` and `subject_id` columns have been added to link to their respective tables. The table consists of 10,299 sample windows. As mentioned above in the original documentation above, each window summarizes 128 readings "in fixed-width sliding windows of 2.56 sec[onds] and 50% overlap."
+For tidy/HAR_sensor_measurements.csv, the experiments table has been filtered to only include the 86 mean and standard deviation measurements for all the variables. Columns have been renamed to more descriptive labels, as described below. `activity_name` and `subject_id` columns have been added to link to their respective tables. The table consists of 10,299 sample windows. As mentioned above in the original documentation above, each window summarizes 128 readings "in fixed-width sliding windows of 2.56 sec[onds] and 50% overlap."
 
 #### Summary of the measurement column names
 
