@@ -1,4 +1,4 @@
-# tidy and average UCI Human Activity Recognition (HAR) Using Smartphones Data Set
+# Tidy and Average UCI Human Activity Recognition (HAR) Using Smartphones Data Set
 
 ## Installation
 
